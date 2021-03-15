@@ -1,5 +1,7 @@
+using AS.Api.Configurations;
 using AS.Infra.IoC;
 using AS.Service.Identity;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -12,9 +14,20 @@ namespace AS.Services.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
+            builder.AddEnvironmentVariables();
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -24,12 +37,11 @@ namespace AS.Services.Api
         {
             services.AddControllers();
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AS.Services.Api", Version = "v1" });
-            });
-
             services.AddCors();
+
+            services.AddSwaggerConfiguration();
+
+            services.AddMediatR(typeof(Startup));
 
             BootStrapper.RegisterServices(services, Configuration);
         }
@@ -40,12 +52,6 @@ namespace AS.Services.Api
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AS.Services.Api v1"));
-            }
 
             new IdentityInitializer(context, userManager, roleManager)
                 .Initialize();
@@ -56,10 +62,19 @@ namespace AS.Services.Api
 
             app.UseAuthorization();
 
+            app.UseCors(c =>
+            {
+                c.AllowAnyHeader();
+                c.AllowAnyMethod();
+                c.AllowAnyOrigin();
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwaggerSetup();
         }
     }
 }

@@ -6,6 +6,16 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Commands\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NetDevPack" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AS.Infra.Shared\AS.Infra.Shared.csproj" />
   </ItemGroup>
 
 </Project>

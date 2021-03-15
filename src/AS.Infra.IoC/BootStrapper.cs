@@ -1,9 +1,11 @@
-﻿using AS.Service.Identity;
+﻿using AS.Infra.Bus;
+using AS.Service.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using NetDevPack.Mediator;
 
 namespace AS.Infra.IoC
 {
@@ -11,6 +13,8 @@ namespace AS.Infra.IoC
     {
         public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<IMediatorHandler, InMemoryBus>();
+
             // Lembrar de ajustar o Redis
             services.AddDistributedRedisCache(options =>
             {

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AS.Application\AS.Application.csproj" />
+    <ProjectReference Include="..\AS.Infra.Bus\AS.Infra.Bus.csproj" />
     <ProjectReference Include="..\AS.Service.Identity\AS.Service.Identity.csproj" />
   </ItemGroup>
 

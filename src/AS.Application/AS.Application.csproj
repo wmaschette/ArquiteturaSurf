@@ -6,8 +6,10 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\" />
-    <Folder Include="ViewModels\" />
+    <Folder Include="Queries\" />
     <Folder Include="Services\" />
+    <Folder Include="ViewModels\Responses\" />
+    <Folder Include="ViewModels\Requests\" />
   </ItemGroup>
 
   <ItemGroup>

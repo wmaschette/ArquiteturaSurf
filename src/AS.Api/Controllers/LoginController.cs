@@ -6,7 +6,7 @@ namespace AS.Services.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LoginController : ApiController
+    public class LoginController : ControllerBase
     {
         [AllowAnonymous]
         [HttpPost]
