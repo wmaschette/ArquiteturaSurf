@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+    as_webapi:
+        image: mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+        build:
+            dockerfile: Dockerfile
+            context: .
+        container_name: Api
+        command: "dotnet AS.Api/out/AS.Api.dll"
+        restart: always
+        ports:
+        - "20000:80"
+        networks:
+        - as-network
+        depends_on:
+        - "redis"
+    redis:
+        image: redis:alpine
+        ports:
+        - "16379:6379"
+        networks:
+        - as-network
+networks: 
+    as-network:
+        driver: bridge
