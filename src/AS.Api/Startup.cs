@@ -1,4 +1,5 @@
 using AS.Api.Configurations;
+using AS.Api.Middlewares;
 using AS.Infra.IoC;
 using AS.Service.Identity;
 using MediatR;
@@ -34,9 +35,9 @@ namespace AS.Services.Api
 
             services.AddCors();
 
-            services.AddSwaggerConfiguration();
-
             services.AddMediatR(typeof(Startup));
+
+            services.AddSwaggerConfiguration();
 
             BootStrapper.RegisterServices(services, Configuration);
         }
@@ -47,6 +48,10 @@ namespace AS.Services.Api
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
+            app.UseResponseCaching();
+            app.UseResponseCompression();
+            app.UseStaticFiles();
+            app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
             new IdentityInitializer(context, userManager, roleManager)
                 .Initialize();

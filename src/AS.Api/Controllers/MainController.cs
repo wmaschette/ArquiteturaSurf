@@ -9,7 +9,7 @@ namespace AS.Services.Api.Controllers
 {
     [Authorize("Bearer")]
     [ApiController]
-    public class ApiController : ControllerBase
+    public class MainController : ControllerBase
     {
         private readonly ICollection<string> _errors = new List<string>();
 

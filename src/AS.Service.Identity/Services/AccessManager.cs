@@ -116,23 +116,19 @@ namespace AS.Service.Identity
                 Message = "OK"
             };
 
-            // Armazena o refresh token em cache através do Redis 
             var refreshTokenData = new RefreshTokenData();
             refreshTokenData.RefreshToken = resultado.RefreshToken;
             refreshTokenData.UserID = credenciais.UserID;
 
-
-            // Calcula o tempo máximo de validade do refresh token
-            // (o mesmo será invalidado automaticamente pelo Redis)
             TimeSpan finalExpiration =
                 TimeSpan.FromSeconds(_tokenConfigurations.FinalExpiration);
 
-            //DistributedCacheEntryOptions opcoesCache =
-            //    new DistributedCacheEntryOptions();
-            //opcoesCache.SetAbsoluteExpiration(finalExpiration);
-            //_cache.SetString(resultado.RefreshToken,
-            //    JsonConvert.SerializeObject(refreshTokenData),
-            //    opcoesCache);
+            DistributedCacheEntryOptions opcoesCache =
+                new DistributedCacheEntryOptions();
+            opcoesCache.SetAbsoluteExpiration(finalExpiration);
+                _cache.SetString(resultado.RefreshToken,
+                JsonConvert.SerializeObject(refreshTokenData),
+                opcoesCache);
 
             return resultado;
         }

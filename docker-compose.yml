@@ -10,17 +10,18 @@ services:
         command: "dotnet AS.Api/out/AS.Api.dll"
         restart: always
         ports:
-        - "20000:80"
+            - "20000:80"
         networks:
-        - as-network
+            - as-network
         depends_on:
-        - "redis"
+            - "redis"
     redis:
         image: redis:alpine
+        container_name: Redis
         ports:
-        - "16379:6379"
+            - "16379:6379"
         networks:
-        - as-network
+            - as-network
 networks: 
     as-network:
         driver: bridge

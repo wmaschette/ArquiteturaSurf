@@ -15,12 +15,11 @@ namespace AS.Infra.IoC
         {
             services.AddScoped<IMediatorHandler, InMemoryBus>();
 
-            // Lembrar de ajustar o Redis
             services.AddDistributedRedisCache(options =>
             {
                 options.Configuration =
                     configuration.GetConnectionString("ConexaoRedis");
-                options.InstanceName = "APIProdutos";
+                options.InstanceName = "APISurf";
             });
 
             services.AddDbContext<IdentityAppDbContext>(options =>
